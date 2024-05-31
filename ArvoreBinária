@@ -1,0 +1,97 @@
+package entities;
+
+public class arvoreBinaria {
+	
+	//toda arvore binaria tem uma raiz, ou seja, ao criar uma arvore tenho que colocar este atributo;
+
+	private No raiz;
+	
+	public arvoreBinaria() {
+		//this.raiz = new No();
+	}
+	
+	public void inserir(int valor) {
+		//passo 1: verificar se a minha raiz é nula
+		if( raiz == null) {
+			raiz = new No(valor);
+			//raiz.setBalanceamento(0)
+		}
+		else {
+			//passo 2: se o valor não for nulo, faço a chamado do meu método de inserção privado
+			// criando um no novo
+			No novo = new No(valor);
+			inserir(novo, raiz);
+		}
+	}
+	
+	private void inserir(No novo, No raiz) {
+		//primeiro verifico se o novo nó que vou inserir é menor ou maior que o valor da minha raiz
+		if(novo.getValor() < raiz.getValor()) {
+			//depois de verificar se o meu nó é maior/menor que minha raiz tenho que ver se o valor onde estou é nulo
+			if(raiz.getEsquerda() == null) {
+				//se ele for nulo, faço o calculo do fator de balanceamento da minha raiz
+				novo.setFatorBalanceamento(0);
+				//depois, atribuoao ponteiro da esquerda o novo nó que estou inserindo
+				raiz.setEsquerda(novo);
+				//e novamente faço o calculo do balanceamento da minha raiz
+				raiz.setFatorBalanceamento(calcularBalanceamento(raiz));
+			}
+			//se o meu nó a esquerda não for nulo, faõ uma chamada recursiva do metodo novamente pra ele que haja as demais verificações necessárias para inseri-lo de forma correta
+			else {
+				inserir(novo, raiz.getEsquerda());//vale lembrar que ao comparar e ver que o meu no da esuqerda da minha raiz nãop é nulo tenho que passar ele como a minha nova raiz, uma vez que o valor fornecido a princípio era menor, logo, caminhanhando pra esquerda
+				//sempre calculado o fator de balanceamento da minha arvore
+				raiz.setFatorBalanceamento(calcularBalanceamento(raiz));
+				
+			}
+		}
+		else {
+			if(raiz.getDireita() == null) {
+				novo.setFatorBalanceamento(0);
+				raiz.setDireita(novo);
+				raiz.setFatorBalanceamento(calcularBalanceamento(raiz));
+			}
+			else {
+				inserir(novo, raiz.getDireita());
+				raiz.setFatorBalanceamento(calcularBalanceamento(raiz));
+			}
+		}
+		
+	}
+	
+	private int calcularBalanceamento(No raiz) {
+		if(raiz.getEsquerda() == null && raiz.getDireita() == null) {
+			return 0;
+		}
+		else {
+			int alturaEsquerda = calcularAltura(raiz.getEsquerda());
+			int alturaDireita = calcularAltura(raiz.getDireita());
+			 return alturaEsquerda - alturaDireita;
+		}
+	}
+	
+	public int calcularAltura() {
+		 return calcularAltura(raiz);
+	}
+	
+	private int  calcularAltura(No raiz) {
+		if(raiz == null) {
+			return 0;
+		}
+		else {
+			return Math.max(calcularAltura(raiz.getEsquerda()), calcularAltura(raiz.getDireita()) )+1;
+		}
+	}
+	
+	 public void imprimirEmOrdem() {
+	        imprimirEmOrdem(raiz);
+	    }
+
+	    private void imprimirEmOrdem(No raiz) {
+	        if (raiz != null) {
+	            imprimirEmOrdem(raiz.getEsquerda());
+	            System.out.print(raiz.getValor() + " ");
+	            imprimirEmOrdem(raiz.getDireita());
+	        }
+	    }
+}
+
