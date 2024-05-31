@@ -1,0 +1,18 @@
+package app;
+
+import entities.arvoreBinaria;
+
+public class Program {
+
+	public static void main(String[] args) {
+		 arvoreBinaria arvore  = new arvoreBinaria();
+		 
+		 arvore.inserir(10);
+
+		 arvore.inserir(5);
+		 arvore.inserir(7);
+		 
+		 arvore.imprimirEmOrdem();
+	}
+
+}
